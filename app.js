@@ -9,7 +9,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , partials = require('express-partials')
-  , postController = require('./routes/post_controller.js');
+  , postController = require('./routes/post_controller.js')
+  , count = require('./count.js');
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser('your secret here'));
   app.use(express.session());
+  app.use(count.count_mw);
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -57,6 +59,9 @@ app.post('/posts', postController.create);
 app.get('/posts/:postid([0-9]+)/edit', postController.edit);
 app.put('/posts/:postid([0-9]+)', postController.update);
 app.delete('/posts/:postid([0-9]+)', postController.destroy);
+
+// -- Search
+app.get('/posts/search', postController.search);
 
 //---------------------
 
