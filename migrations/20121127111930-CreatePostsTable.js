@@ -19,7 +19,8 @@ module.exports = {
            updatedAt: { type: DataTypes.DATE,
                         allowNull: false }
       }, { sync: {force:true} })
-      .complete(done);;
+    .complete(done);;
+
   },
   down: function(migration, DataTypes, done) {
     // add reverting commands here
