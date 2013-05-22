@@ -18,10 +18,7 @@ module.exports = {
                         allowNull: false },
            updatedAt: { type: DataTypes.DATE,
                         allowNull: false }
-      }, { sync: {force:true} })
-      .complete(done);;
-  },
-  down: function(migration, DataTypes, done) {
+      }, { sync: {force:true} });
     // add reverting commands here
       migration.dropTable('Posts')
         .complete(done);
