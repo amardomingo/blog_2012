@@ -10,6 +10,7 @@ cat > config.json <<EOF
 "port":
 "$DATABASE_PORT",
 "protocol": "$DATABASE_PROTOCOL",
+"storage": "$DATABASE_STORAGE",
 "omitNull": true
 }
 EOF
