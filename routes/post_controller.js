@@ -8,7 +8,7 @@ exports.index = function(req, res, next) {
     format = format.toLowerCase();
 
     models.Post
-        .findAll({order: 'updatedAt DESC'})
+        .findAll({order: '"updatedAt" DESC'})
         .success(function(posts) {
             switch (format) { 
               case 'html':
@@ -268,7 +268,7 @@ exports.search = function(req, res, next) {
     filter = '%' + filter.replace(' ', '%') + '%';
     models.Post
     .findAll({where: ["title LIKE ? OR body LIKE ?", filter, filter],
-     order: "updatedAt DESC"})
+     order: '"updatedAt" DESC'})
     .success(function(posts){
         res.render('posts/search', {
                     search_string: filter,
