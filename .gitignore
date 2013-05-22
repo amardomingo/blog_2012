@@ -2,3 +2,5 @@
 *~
 node_modules
 blog.sqlite
+.env
+config/config.json
