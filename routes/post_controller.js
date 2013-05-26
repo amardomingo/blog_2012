@@ -91,28 +91,7 @@ function posts_to_xml(posts) {
 
 // GET /posts/33
 exports.show = function(req, res, next) {
-
-    var format = req.params.format || 'html';
-    format = format.toLowerCase();
-
-    switch (format) { 
-      case 'html':
-      case 'htm':
-          res.render('posts/show', { post: req.post });
-          break;
-      case 'json':
-          res.send(req.post);
-          break;
-      case 'xml':
-             res.send(post_to_xml(req.post));
-          break;
-      case 'txt':
-          res.send(req.post.title+' ('+req.post.body+')');
-          break;
-      default:
-          console.log('No se soporta el formato \".'+format+'\" pedido para \"'+req.url+'\".');
-          res.send(406);
-    }
+    res.render('posts/show', { post: req.post });
 };
 
 function post_to_xml(post) {
@@ -191,42 +170,32 @@ exports.create = function(req, res, next) {
 
 // GET /posts/33/edit
 exports.edit = function(req, res, next) {
-
     res.render('posts/edit', {post: req.post});
 };
 
 // PUT /posts/33
 exports.update = function(req, res, next) {
-
     req.post.title = req.body.post.title;
     req.post.body = req.body.post.body;
-                
+    
     var validate_errors = req.post.validate();
     if (validate_errors) {
-        console.log("Errores de validación:", validate_errors);
-
-        req.flash('error', 'Los datos del formulario son incorrectos.');
-        for (var err in validate_errors) {
-            req.flash('error', validate_errors[err]);
-        };
-
-        res.render('posts/edit', {post: req.post,
-                                  validate_errors: validate_errors});
+        console.log("Errores de validacion:", validate_errors);
+        res.render('posts/edit', {post: req.post});
         return;
-    } 
-    req.post.save(['title', 'body'])
-        .success(function() {
-            req.flash('success', 'Post actualizado con éxito.');
-            res.redirect('/posts');
-        })
-        .error(function(error) {
-            next(error);
-        });
+     }
+    req.post.save(['title','body'])
+            .success(function() {
+                res.redirect('/posts');
+            })
+            .error(function(error) {
+                console.log("Error: No puedo editar el post:", error);
+                res.render('posts/edit', {post: req.post});
+            });
 };
 
 // DELETE /posts/33
 exports.destroy = function(req, res, next) {
-
     req.post.destroy()
         .success(function() {
             req.flash('success', 'Post eliminado con éxito.');
