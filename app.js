@@ -12,6 +12,7 @@ var express = require('express')
   , postController = require('./routes/post_controller.js')
   , userController = require('./routes/user_controller.js')
   , commentController = require('./routes/comment_controller.js')
+  , favController = require('./routes/fav_controller.js)')
   , attachmentController = require('./routes/attachment_controller.js');
 
 var util = require('util');
@@ -155,6 +156,18 @@ app.delete('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)',
 	   sessionController.requiresLogin,
 	   commentController.loggedUserIsAuthor,
 	   commentController.destroy);
+
+// favs
+app.get('/users/:userid/favourites',
+       sessionController.requiresLogin,
+       favController.index);
+       
+app.put('/users/:userid/favourites/:postid',
+       sessionController.requiresLogin,
+       favControlloer.add);
+app.delete('/users/:userid/favourites/:postid,
+       sessionController.requiresLogin,
+       favController.delete);
 
 // Comentarios Huerfanos
 app.get('/orphancomments', 
