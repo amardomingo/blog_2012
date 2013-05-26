@@ -110,7 +110,7 @@ exports.create = function(req, res, next) {
     }
     user.salt = createNewSalt();
     user.hashed_password = encriptarPassword(req.body.user.password, user.salt);
-    user.save()
+    //user.save()
 
     // El login debe ser unico:
     models.User
