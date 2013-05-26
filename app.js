@@ -12,6 +12,7 @@ var express = require('express')
   , count = require('./count.js')
   , userController = require('./routes/user_controller.js')
   , sessionController = require('./routes/session_controller.js')
+  , commentController = require('./routes/comment_controller.js')
   , util = require('util');
 
 var app = express();
@@ -84,26 +85,53 @@ app.locals.escapeText =  function(text) {
 
 app.get('/', routes.index);
 
-//---------------------
-
+// -- AutoLoad
 app.param('postid', postController.load);
 app.param('userid', userController.load);
+app.param('commentid', commentController.load);
 
+// -- Todo lo demas
+
+// - Posts
 app.get('/posts.:format?', postController.index);
 app.get('/posts/new', sessionController.requiresLogin ,postController.new);
 app.get('/posts/:postid([0-9]+).:format?', postController.show);
 app.post('/posts', sessionController.requiresLogin, postController.create);
-app.get('/posts/:postid([0-9]+)/edit',sessionController.requiresLogin, postController.edit);
-app.put('/posts/:postid([0-9]+)',sessionController.requiresLogin, postController.update);
-app.delete('/posts/:postid([0-9]+)',sessionController.requiresLogin, postController.destroy);
+app.get('/posts/:postid([0-9]+)/edit', sessionController.requiresLogin,
+        postController.loggedUserIsAuthor, postController.edit);
+app.put('/posts/:postid([0-9]+)', sessionController.requiresLogin,
+        postController.loggedUserIsAuthor, postController.update);
+app.delete('/posts/:postid([0-9]+)', sessionController.requiresLogin,
+        postController.loggedUserIsAuthor, postController.destroy);
 
+// - Comments
+app.get('/posts/:postid([0-9]+)/comments', commentController.index);
+app.get('/posts/:postid([0-9]+)/comments/new', sessionController.requiresLogin,
+         commentController.new);
+app.get('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)', commentController.show);
+
+app.post('/posts/:postid([0-9]+)/comments', sessionController.requiresLogin,
+        commentController.create);
+app.get('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)/edit', 
+        sessionController.requiresLogin, commentController.loggedUserIsAuthor,
+        commentController.edit);
+app.put('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)',
+        sessionController.requiresLogin, commentController.loggedUserIsAuthor,
+        commentController.update);
+app.delete('/posts/:postid([0-9]+)/comments/:commentid([0-9]+)',
+        sessionController.requiresLogin, commentController.loggedUserIsAuthor,
+        commentController.destroy);
+        
+// - Users
 app.get('/users', userController.index);
 app.get('/users/new', userController.new);
 app.get('/users/:userid([0-9]+)', userController.show);
 app.post('/users', userController.create);
-app.get('/users/:userid([0-9]+)/edit',sessionController.requiresLogin, userController.edit);
-app.put('/users/:userid([0-9]+)', sessionController.requiresLogin, userController.update);
-app.delete('/users/:userid([0-9]+)', sessionController.requiresLogin, userController.destroy);
+app.get('/users/:userid([0-9]+)/edit',sessionController.requiresLogin,
+        userController.loggedUserIsUser, userController.edit);
+app.put('/users/:userid([0-9]+)', sessionController.requiresLogin,
+        userController.loggedUserIsUser, userController.update);
+//app.delete('/users/:userid([0-9]+)', sessionController.requiresLogin, userController.destroy);
 
 app.get('/login', sessionController.new);
 app.post('/login', sessionController.create);
