@@ -44,7 +44,7 @@ exports.index = function(req, res, next) {
 // GET /users/33
 exports.show = function(req, res, next) {
     res.render('users/show', {
-    user: req.user
+        user: req.user
     });
 };
 

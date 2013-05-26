@@ -74,6 +74,7 @@ app.get('/', routes.index);
 //---------------------
 
 app.param('postid', postController.load);
+app.param('userid', userController.load);
 
 app.get('/posts.:format?', postController.index);
 app.get('/posts/new', postController.new);
@@ -83,10 +84,14 @@ app.get('/posts/:postid([0-9]+)/edit', postController.edit);
 app.put('/posts/:postid([0-9]+)', postController.update);
 app.delete('/posts/:postid([0-9]+)', postController.destroy);
 
-app.get('/users.:format?', userController.index);
+app.get('/users', userController.index);
 app.get('/users/new', userController.new);
+app.get('/users/:userid([0-9]+)', userController.show);
 app.post('/users', userController.create);
-app.get('/users/:userid([0-9]+).:format?', postController.show);
+app.get('/users/:userid([0-9]+)/edit', userController.edit);
+app.put('/users/:userid([0-9]+)', userController.update);
+app.delete('/users/:userid([0-9]+)', userController.destroy);
+
 
 //---------------------
 
