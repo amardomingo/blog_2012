@@ -32,7 +32,7 @@ module.exports = {
             type: DataTypes.STRING,
             notEmpty: true,
             allowNull: false
-          };
+          },
           createdAt: {
             type: DataTypes.DATE,
             allowNull: false
