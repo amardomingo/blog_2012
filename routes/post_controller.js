@@ -31,7 +31,31 @@ exports.index = function(req, res, next) {
                 include: [{model:models.User, as:'Author'}]
             })
             .success(function(posts) {
-                res.render('posts/index', { posts: posts});
+                var contados = 0;
+                var nComments = [];
+                for (var i in posts) {
+                    // Lo incializo a 0;
+                    nComments[i] = 0;
+                    // el id empieza por 1, mientras que el indice por 0.
+                    models.Comment.count({where: {postId: parseInt(i) +1}})
+                        .success(function(count) {
+                            if(count) {
+                                nComments[i] = count;
+                            }
+                            console.log(count);
+                            // Respondo una vez que tengo todos
+                            console.log("l: " + posts.length);
+                            contados++;
+                            if ((contados) == posts.length) {
+                                console.log("contados: " + contados);
+                                console.log(nComments);
+                                res.render('posts/index', {posts: posts, nComments: nComments});
+                            }
+                        })
+                        .error(function(error) { 
+                            return;
+                         });
+                }
             })
             .error(function(error) {
                 next(error);
@@ -56,11 +80,24 @@ exports.show = function(req, res, next) {
                                     var new_comment = models.Comment.build({
                                         body: 'Introduzca el texto del comentario'
                                     });
-                                    res.render('posts/show', {
-                                        post: req.post, // post a mostrar
-                                        comments: comments, // comentarios al post
-                                        comment: new_comment // para editor de comentarios
-                                    });
+                                    models.Comment.count({where: {postId: req.post.id}})
+                                            .success(function(count) {
+                                                req.post.ccount = count;
+                                                res.render('posts/show',
+                                                {post: req.post,
+                                                comments: comments,
+                                                comment: new_comment
+                                                });
+                                                })
+                                            .error(function(error) { 
+                                                next(error)
+                                             });
+
+                                    //res.render('posts/show', {
+                                    //    post: req.post, // post a mostrar
+                                     //   comments: comments, // comentarios al post
+                                    //    comment: new_comment // para editor de comentarios
+                                    //});
                                 })
                                 .error(function(error) {next(error);});
             })

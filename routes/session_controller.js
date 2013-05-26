@@ -67,4 +67,19 @@ exports.requiresLogin = function (req, res, next) {
     }
 };
 
+// Middleware para el timeout de un usuario
+// Si el user permanece inactivo durante más de 5 minutos, se le cierra la sesion
+exports.timeout = function (req, res, next) {
+    if (req.session.user) {
+        if (req.session.user.time + 300000 < Date.now() ) {
+            //Timeout
+            delete req.session.user;
+            req.flash('info', 'La sesion ha expirado.')
+        } else {
+            req.session.user.time = Date.now()
+        }
+    }
+    next(); 
+}
+
 

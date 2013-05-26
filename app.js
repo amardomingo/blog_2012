@@ -36,6 +36,8 @@ app.configure(function(){
      res.locals.flash = function() { return req.flash() };
      next();
   });
+  
+  app.use(sessionController.timeout);
  
   // Helper dinamico:
   app.use(function(req, res, next) {

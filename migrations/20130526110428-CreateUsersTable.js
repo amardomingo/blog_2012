@@ -40,11 +40,7 @@ module.exports = {
           updatedAt: {
             type: DataTypes.DATE,
             allowNull: false
-          }.
-          time: {
-            type: DataTypes.INTEGER,
-            allowNull: false;
-            }
+          }
         },{ sync: {force:true}
      }).complete(done);
   },
