@@ -5,11 +5,11 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
   , partials = require('express-partials')
-  , postController = require('./routes/post_controller.js');
+  , postController = require('./routes/post_controller.js')
+  , userController = require('./routes/user_controller.js');
 
 var util = require('util');
 
@@ -70,7 +70,6 @@ app.locals.escapeText =  function(text) {
 // -- Routes
 
 app.get('/', routes.index);
-app.get('/users', user.list);
 
 //---------------------
 
@@ -83,6 +82,11 @@ app.post('/posts', postController.create);
 app.get('/posts/:postid([0-9]+)/edit', postController.edit);
 app.put('/posts/:postid([0-9]+)', postController.update);
 app.delete('/posts/:postid([0-9]+)', postController.destroy);
+
+app.get('/users.:format?', userController.index);
+app.get('/users/new', userController.new);
+app.post('/users', userController.create);
+app.get('/users/:userid([0-9]+).:format?', postController.show);
 
 //---------------------
 
