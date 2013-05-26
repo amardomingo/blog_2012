@@ -18,7 +18,44 @@
     <input type="text" id="user_email" name="user[email]" size="30" value='<%= user.email %>' />
 
 </div>
+
+<div class="field">
+    <label for="user_password">Password:</label><br />
+        <input type="password" id="user_password" name="user[password]" size="30" value='' />
+</div>
+
+<div class="field">
+    <label for="user_confirm_password">Confirm Password:</label><br />
+        <input type="password" id="user_confirm_password" size="30" value='' />
+</div>
+
+<div class="actions">
+    <input name="commit" type="submit" value="Salvar" onclick='return confirmPassword()'/>
+</div>
+
+
 <div class="actions">
     <input name="commit" type="submit" value="Salvar" />
 </div>
+
+<script>
+function confirmPassword() {
+var pw1 = document.all['user_password'].value;
+var pw2 = document.all['user_confirm_password'].value;
+<% if ( ! user.id) { %>
+if (!pw1 || !pw2) {
+alert('Debe rellenar los campos de Password y Confirmación.');
+return false;
+}
+<% } %>
+if (pw1 == pw2) {
+return true;
+} else {
+alert('Los passwords introducidos no coinciden.');
+return false;!
+!
+}
+}
+</script>
+
 

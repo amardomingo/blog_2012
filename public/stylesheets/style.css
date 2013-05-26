@@ -103,4 +103,11 @@ article {
   width: 100%;
 }
 
+#logininfo {
+    float: right;
+    clear: both;
+    margin-top: -15px;
+}
+
+
 
