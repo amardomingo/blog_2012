@@ -40,7 +40,7 @@ exports.index = function(req, res, next) {
                     models.Comment.count({where: {postId: parseInt(i) +1}})
                         .success(function(count) {
                             if(count) {
-                                nComments[post.length - contados] = count;
+                                nComments[posts.length - contados -1] = count;
                             }
                             // Respondo una vez que tengo todos
                             contados++;
