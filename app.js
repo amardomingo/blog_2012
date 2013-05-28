@@ -12,7 +12,7 @@ var express = require('express')
   , postController = require('./routes/post_controller.js')
   , userController = require('./routes/user_controller.js')
   , commentController = require('./routes/comment_controller.js')
-  , favController = require('./routes/fav_controller.js')
+  , favController = require('./routes/favourites_controller.js')
   , attachmentController = require('./routes/attachment_controller.js');
 
 var util = require('util');
