@@ -1,5 +1,5 @@
 
-// Definicion del modelo Post:
+// Definicion del modelo Fav:
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('favourites',
@@ -14,20 +14,6 @@ module.exports = function(sequelize, DataTypes) {
                  validate: {
                      notEmpty: {msg: "El campo autor no puede estar vacio"}
                  }
-              },
-              createdAt: {
-              title: {
-                 type: DataTypes.STRING,
-                 validate: {
-                     notEmpty: {msg: "El campo del titulo no puede estar vacio"}
-                 }
-              },
-              updatedAt
-              title: {
-                 type: DataTypes.STRING,
-                 validate: {
-                     notEmpty: {msg: "El campo del titulo no puede estar vacio"}
-                 }
-              },
+              } 
             });
 }
