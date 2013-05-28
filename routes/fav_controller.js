@@ -5,7 +5,7 @@
 exports.index = function(req, res, next) {
 // Busqueda del array de posts favoritos de un usuario
 
-  models.Favourite.findAll({where: {userId: req.user.id})
+  models.Favourite.findAll({where: {userId: req.user.id}})
      .success(function(favourites) {
 
          // generar array con postIds de los post favoritos
@@ -45,7 +45,7 @@ exports.index = function(req, res, next) {
         .error(function(error) {
             next(error);
         });
-    });                    
+//    });                    
 };
 
 // PUT  /users/:userid/favourites/:postid
