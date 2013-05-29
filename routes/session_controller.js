@@ -1,4 +1,5 @@
 
+var models = require('../models/models.js');
 var util = require('util');
 
 
@@ -57,9 +58,6 @@ exports.create = function(req, res) {
     var login = req.body.login;
     var password  = req.body.password;
 
-    console.log('Login    = ' + login);
-    console.log('Password = ' + password);
-
     require('./user_controller').autenticar(login, password, function(error, user) {
 
         if (error) {
@@ -75,10 +73,25 @@ exports.create = function(req, res) {
         // IMPORTANTE: creo req.session.user.
         // Solo guardo algunos campos del usuario en la sesion.
         // Esto es lo que uso para saber si he hecho login o no.
-        req.session.user = {id:user.id, login:user.login, name:user.name};
+        models.Admin.find({where : {userId: user.id}})
+            .success(function(admin) {
+                if (admin) {
+                console.log('admin logueado');
+                    req.session.user = {id:user.id, login:user.login,
+                                         name:user.name, isAdmin: 1};
+                 } else {
+                     req.session.user = {id:user.id, login:user.login,
+                                         name:user.name};
+                 }
+                  // Vuelvo al url indicado en redir
+                    res.redirect(redir);        
+             })
+             .error(function(error) {
+                next(error);
+             });
 
         // Vuelvo al url indicado en redir
-        res.redirect(redir);
+        //res.redirect(redir);
     });
 }; 
 

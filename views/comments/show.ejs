@@ -10,7 +10,8 @@
 
 <p><%- escapeText(comment.body) %></p>
 
-<% if (session.user && session.user.id == comment.authorId) {%>
+<% if (session.user && (session.user.id == comment.authorId
+            || session.user.isAdmin)) {%>
 
   <a href="/posts/<%= post.id %>/comments/<%= comment.id %>/edit"> Editar </a>
 

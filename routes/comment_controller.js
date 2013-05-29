@@ -29,8 +29,9 @@ exports.load = function(req, res, next, id) {
 * Comprueba que el usuario logeado es el author.
 */
 exports.loggedUserIsAuthor = function(req, res, next) {
-    
-    if (req.session.user && req.session.user.id == req.comment.authorId) {
+    // Los admins tambien se consideran autores
+    if (req.session.user && 
+    (req.session.user.id == req.comment.authorId || req.session.user.isAdmin)) {
         next();
     } else {
         console.log('Operación prohibida: El usuario logeado no es el autor del comentario.');
@@ -51,7 +52,7 @@ exports.index = function(req, res, next) {
         .success(function(comments) {
             res.render('comments/index', {
                 comments: comments,
-                post: req.post
+                post: req.post,
             });
         })
         .error(function(error) {

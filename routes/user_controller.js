@@ -29,7 +29,8 @@ exports.load = function(req, res, next, id) {
 */
 exports.loggedUserIsUser = function(req, res, next) {
     
-   if (req.session.user && req.session.user.id == req.user.id) {
+   if (req.session.user && (req.session.user.id == req.user.id
+        || req.session.user.isAdmin)) {
       next();
    } else {
       console.log('Ruta prohibida: no soy el usuario logeado.');
@@ -252,6 +253,5 @@ exports.autenticar = function(login, password, callback) {
         .error(function(err) {
             callback(err);
         });
-}; 
-
+};
 //  ----------------------------------

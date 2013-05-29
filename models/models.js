@@ -24,6 +24,7 @@ var Post = sequelize.import(path.join(__dirname,'post'));
 var User = sequelize.import(path.join(__dirname,'user'));
 var Comment = sequelize.import(path.join(__dirname,'comment'));
 var Favourite = sequelize.import(path.join(__dirname,'favourites'));
+var Admin = sequelize.import(path.join(__dirname,'admin'));
 //var Attachment = sequelize.import(path.join(__dirname,'attachment'));
 
 // Relaciones
@@ -40,6 +41,7 @@ User.hasMany(Post, {foreignKey: 'authorId'});
 User.hasMany(Comment, {foreignKey: 'authorId'});
 Post.hasMany(Comment, {foreignKey: 'postId'});
 Post.hasMany(Favourite, {foreignKey: 'postId'});
+Admin.hasMany(User, {foreignKey: 'id'});
 
 //Post.hasMany(Attachment, {foreignKey: 'postId'});
 
@@ -65,4 +67,5 @@ exports.Post = Post;
 exports.User = User;
 exports.Comment = Comment;
 exports.Favourite = Favourite;
+exports.Admin = Admin;
 //exports.Attachment = Attachment;

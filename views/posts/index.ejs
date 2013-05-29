@@ -37,7 +37,8 @@
 
      <footer class="pull-right">
 
-      <% if (session.user && session.user.id == posts[i].authorId) {%>
+      <% if (session.user && 
+      (session.user.id == posts[i].authorId || session.user.isAdmin )) {%>
 
         <% var form_name = 'fpi' + i; %>
 

@@ -20,7 +20,8 @@
 
      <div class="pull-right">
 
-      <% if (session.user && session.user.id == comments[i].authorId) {%>
+      <% if (session.user &&( session.user.id == comments[i].authorId 
+                || session.user.isAdmin)) {%>
 
         <% var form_name = 'fci' + i; %>
 

@@ -16,7 +16,8 @@
 </p>
 
 
-<% if (session.user && session.user.id == user.id) {%>
+<% if (session.user && (session.user.id == user.id
+       || session.user.isAdmin)) {%>
    <a href="/users/<%= user.id %>/edit"> Editar </a>
 <% } %>
 

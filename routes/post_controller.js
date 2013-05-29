@@ -30,7 +30,8 @@ exports.load = function(req, res, next, id) {
 */
 exports.loggedUserIsAuthor = function(req, res, next) {
     
-    if (req.session.user && req.session.user.id == req.post.authorId) {
+    if (req.session.user && 
+    (req.session.user.id == req.post.authorId || req.session.user.isAdmin)) {
         next();
     } else {
         console.log('Operación prohibida: El usuario logeado no es el autor del post.');
@@ -46,7 +47,7 @@ exports.index = function(req, res, next) {
 
     var format = req.params.format || 'html';
     format = format.toLowerCase();
-
+    
     models.Post
         .findAll({order: 'updatedAt DESC',
 	                include: [ { model: models.User, as: 'Author' } ]

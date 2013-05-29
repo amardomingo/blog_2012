@@ -192,7 +192,7 @@ app.post('/users', userController.create);
 
 app.get('/users/:userid([0-9]+)/edit', 
         sessionController.requiresLogin,
-	userController.loggedUserIsUser,
+	    userController.loggedUserIsUser,
         userController.edit);
 
 app.put('/users/:userid([0-9]+)', 
