@@ -1,13 +1,15 @@
+var models = require('../models/models.js');
 
 /*
 *  Auto-loading con app.param
 */
 exports.load = function(req, res, next, id) {
 
-   models.Favourites
-        .find({where: {userId: Number(id)}})
+   models.Favourite
+        .find({where: {authorId: Number(id)}})
         .success(function(favs) {
             if (favs) {
+                console.log('AutoLoadfavs: ' + favs);
                 req.fav = favs;
                 next();
             } else {
@@ -27,7 +29,7 @@ exports.load = function(req, res, next, id) {
 exports.index = function(req, res, next) {
 // Busqueda del array de posts favoritos de un usuario
 
-  models.Favourite.findAll({where: {userId: req.user.id}})
+  models.Favourite.findAll({where: {authorId: req.user.id}})
      .success(function(favourites) {
 
          // generar array con postIds de los post favoritos
@@ -57,7 +59,9 @@ exports.index = function(req, res, next) {
                     models.Favourite ]
                  })
                  .success(function(posts) {
-                        //TODO
+                        res.render('favourites/index', {
+                            posts: posts
+                        });
                  })
                  .error(function(error) {
                     next(error);
@@ -71,23 +75,25 @@ exports.index = function(req, res, next) {
 
 // PUT  /users/:userid/favourites/:postid
 exports.add = function(req, res, next) {
-    // Compruebo que no esté ya añadido
-    models.Favourites.find({where: {userId: req.user.id, postId: req.post.id}})
-            .success(function(post){
-                if (post.length == 0) {
+    // Compruebo que no esté ya añadido. O no...
+    //models.Favourite.find({where: {authorId: req.user.id, postId: req.post.id}})
+      //      .success(function(post){
+        //        if (post.length == 0) {
                     // No esta en favoritos, lo añado
-                    var fav = models.Favourites.build( {
-                        userID: req.session.user.id,
-                        postID: req.post.id}
+                    console.log('user: ' + req.session.user.id);
+                    console.log('post: ' + req.post.id);
+                    var fav = models.Favourite.build({
+                        authorId: req.session.user.id,
+                        postId: req.post.id}
                     );
-                    
+                    console.log('Añadiendo: ' + fav);
                     var validate = fav.validate();
                     if (validate) {
                         for (var error in validate) {
                             req.flash('error', validate[error])
                         }
                         
-                        //TODO render error
+                        res.redirect('/posts/' + req.post.id);
                         return;
                     }
                     
@@ -95,26 +101,26 @@ exports.add = function(req, res, next) {
                     fav.save()
                         .success(function() {
                             req.flash('success', 'Post añadido a favoritos');
-                            res.redirect('/posts' + req.post.id);
+                            res.redirect('/posts/' + req.post.id);
                         })
                         .error(function(error) {
                             next(error);
                         });
                     
-                } else {
-                    req.flash('info', 'El post ya está en favoritos');
-                }
-            })
-            .error(function(error) {
-                next(error);
-            });
+                //} else {
+                //    req.flash('info', 'El post ya está en favoritos');
+               // }
+            //})
+            //.error(function(error) {
+            //    next(error);
+            //});
 };
 
 
 // DELETE  /users/:userid/favourites/:postid
 exports.delete = function(req, res, next) {
     // Compruebo que exista
-    models.Favourites.find({where: {userId: req.user.id, postId: req.post.id}})
+    models.Favourite.find({where: {authorId: req.user.id, postId: req.post.id}})
             .success(function(post){
                 if (post) {
                     req.favourites.destroy();

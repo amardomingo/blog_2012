@@ -5,8 +5,12 @@
       <h1>
         <%= post.title %> 
         <small>por <em> <%= post.author && post.author.name || "Sin autor" %> </em></small>
-
-        <a class="btn btn-small" href="/users/:userid/favourites/:postid"><i class="icon-star icon black"></i> A Favoritos</a>
+        <% if (session.user) {%>
+        <form method='post' action="/users/<%= session.user.id%>/favourites/<%= post.id %>">
+<input type='hidden' name='_method' value='put'>
+<button class="btn btn-small" type="submmit"><i class="icon-star icon black"></i> A Favoritos</button>
+        </form>
+        <% } %>
       </h1>
      <em> <%= post.updatedAt.toLocaleDateString() %></em>
    </div>

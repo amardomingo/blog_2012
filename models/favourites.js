@@ -3,16 +3,16 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('favourites',
-            { userID: {
+            { authorId: {
                  type: DataTypes.INTEGER,
                  validate: {
                      notEmpty: {msg: "El campo autor no puede estar vacio"}
                  }
               },
-              postID: {
+              postId: {
                  type: DataTypes.INTEGER,
                  validate: {
-                     notEmpty: {msg: "El campo autor no puede estar vacio"}
+                     notEmpty: {msg: "El campo postid no puede estar vacio"}
                  }
               } 
             });
