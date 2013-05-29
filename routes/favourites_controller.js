@@ -6,7 +6,7 @@ var models = require('../models/models.js');
 exports.load = function(req, res, next, id) {
 
    models.Favourite
-        .find({where: {authorId: Number(id)}})
+        .findAll({where: {authorId: Number(id)}})
         .success(function(favs) {
             if (favs) {
                 console.log('AutoLoadfavs: ' + favs);
