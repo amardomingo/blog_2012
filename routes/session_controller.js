@@ -77,6 +77,7 @@ exports.create = function(req, res) {
             .success(function(admin) {
                 if (admin) {
                 console.log('admin logueado');
+                console.log('email: ' + user.email);
                     req.session.user = {id:user.id, login:user.login,
                                          name:user.name, isAdmin: 1};
                  } else {

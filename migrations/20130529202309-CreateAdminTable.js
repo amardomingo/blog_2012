@@ -10,7 +10,7 @@ module.exports = {
                  autoIncrement: true,
                  unique: true
              },
-             userID: {
+             userId: {
                  type: DataTypes.INTEGER,
                  notEmpty: true,
                  unique: true
