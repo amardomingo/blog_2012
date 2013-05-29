@@ -1,6 +1,8 @@
 
 var models = require('../models/models.js');
 
+var crypto = require('crypto');
+
 
 /*
 *  Auto-loading con app.param
@@ -133,6 +135,10 @@ exports.show = function(req, res, next) {
                                  include: [ { model: models.User, as: 'Author' } ] 
                        })
                        .success(function(comments) {
+                          var gravatars = {};
+                          for (var i in comments) {
+                            gravatars[comments[i].authorId] = getGravatar(comments[i].author.email);
+                          }
 
                           var format = req.params.format || 'html';
                           format = format.toLowerCase();
@@ -147,7 +153,8 @@ exports.show = function(req, res, next) {
                                     post: req.post,
                                     comments: comments,
                                     comment: new_comment,
-                                    isFav: req.isFav
+                                    isFav: req.isFav,
+                                    gravatars: gravatars
                                     //attachments: attachments
                                 });
                                 break;
@@ -337,3 +344,8 @@ exports.destroy = function(req, res, next) {
            next(error);
        });
 };
+
+function getGravatar(mail) {
+    var hash = crypto.createHash('md5').update(mail).digest("hex");
+    return 'http://www.gravatar.com/avatar/' + hash + '.png';
+}

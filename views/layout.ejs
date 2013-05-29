@@ -35,7 +35,7 @@
           <div class="btn-group pull-right">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                 <% if (session.user) { %>
-                  <input type="image" src="http://www.gravatar.com/avatar/ef0e74d53f69fd7686f5ccdbf2b98231.jpg?s=25" />
+                  <input id="barimg" type="image" src="<%= session.user.gravatar %>" />
                   <%= session.user.name %>       
                 <% } else { %>
                   <i class="icon-user"></i> 

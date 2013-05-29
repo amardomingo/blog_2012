@@ -75,3 +75,15 @@ Comment
   line-height: 27px;
   color: inherit;
 }
+
+/* Gravatares */
+
+#barimg {
+    max-height:25px;
+    max-width:25px;
+}
+
+.gravatar {
+    height:50px;
+    width:50px;
+}

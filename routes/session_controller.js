@@ -1,6 +1,7 @@
 
 var models = require('../models/models.js');
 var util = require('util');
+var crypto = require('crypto');
 
 
 // Middleware: Login is required:
@@ -79,9 +80,11 @@ exports.create = function(req, res) {
                 console.log('admin logueado');
                 console.log('email: ' + user.email);
                     req.session.user = {id:user.id, login:user.login,
-                                         name:user.name, isAdmin: 1};
+                                         name:user.name, isAdmin: 1,
+                                         gravatar: getGravatar(user.email)};
                  } else {
                      req.session.user = {id:user.id, login:user.login,
+                                         gravatar: getGravatar(user.email),
                                          name:user.name};
                  }
                   // Vuelvo al url indicado en redir
@@ -108,4 +111,8 @@ exports.destroy = function(req, res) {
     res.redirect("/login");     
 };
 
+function getGravatar(mail) {
+    var hash = crypto.createHash('md5').update(mail).digest("hex");
+    return 'http://www.gravatar.com/avatar/' + hash + '.png';
+}
 

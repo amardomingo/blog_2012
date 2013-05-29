@@ -9,6 +9,7 @@
 
 <% for (var i in comments) { %>
   <div class="comment">
+        <img class="gravatar" src="<%= gravatars[comments[i].authorId] %>"/>
         <strong> <%= comments[i].author && comments[i].author.name || "Sin autor" %> </strong> comentó:
         <em class="pull-right">
           <%= comments[i].updatedAt.toLocaleDateString() %>

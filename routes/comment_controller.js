@@ -1,6 +1,8 @@
 
 var models = require('../models/models.js');
 
+var crypto = require('crypto');
+
 var userController = require('./user_controller');
 
 /*
@@ -42,6 +44,11 @@ exports.loggedUserIsAuthor = function(req, res, next) {
 //-----------------------------------------------------------
 
 
+function getGravatar(mail) {
+    var hash = crypto.createHash('md5').update(mail).digest("hex");
+    return 'http://www.gravatar.com/avatar/' + hash + '.png';
+}
+
 // GET /posts/33/comments
 exports.index = function(req, res, next) {
 
@@ -50,9 +57,14 @@ exports.index = function(req, res, next) {
                   order: 'updatedAt DESC',
                   include: [ {model: models.User, as: 'Author'} ]})
         .success(function(comments) {
+            var gravatars = {};
+            for (var i in comments) {
+                gravatars[comments[i].authorId] = getGravatar(comments[i].author.email);
+            }
             res.render('comments/index', {
                 comments: comments,
                 post: req.post,
+                gravatars: gravatars
             });
         })
         .error(function(error) {
@@ -80,11 +92,17 @@ exports.show = function(req, res, next) {
                     // Añado el autor del comentario como el atributo "author".
                     // Si no encuentro el autor uso el valor {}.
                     req.comment.author = user || {};
-
+                    if (user.email) {
+                        var grav = getGravatar(user.email);
+                    } else {
+                        // Gravatar por defecto
+                        var grav = 'http://www.gravatar.com/avatar/ef0e74d53f69fd7686f5ccdbf2b98231.png';
+                    }
                     res.render('comments/show', {
-                        comment: req.comment,
-                        post: req.post
-                    });
+                            comment: req.comment,
+                            post: req.post,
+                            grav: grav
+                            });
                 })            
                 .error(function(error) {
                     next(error);
