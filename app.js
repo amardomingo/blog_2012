@@ -13,7 +13,7 @@ var express = require('express')
   , userController = require('./routes/user_controller.js')
   , commentController = require('./routes/comment_controller.js')
   , favController = require('./routes/favourites_controller.js')
-  , attachmentController = require('./routes/attachment_controller.js');
+
 
 var util = require('util');
 
@@ -95,7 +95,6 @@ app.get('/', routes.index);
 app.param('postid', postController.load);
 app.param('userid', userController.load);
 app.param('commentid', commentController.load);
-app.param('attachmentid', attachmentController.load);
 app.param('userid',favController.load);
 
 //---------------------
@@ -106,28 +105,6 @@ app.get('/logout', sessionController.destroy);
 
 //---------------------
 
-app.get('/posts/:postid([0-9]+)/attachments', 
-  attachmentController.index);
-
-app.get('/posts/:postid([0-9]+)/attachments/new', 
-  sessionController.requiresLogin,
-  postController.loggedUserIsAuthor,
-  attachmentController.new);
-
-app.post('/posts/:postid([0-9]+)/attachments', 
-   sessionController.requiresLogin,
-   postController.loggedUserIsAuthor,
-   attachmentController.create);
-
-app.delete('/posts/:postid([0-9]+)/attachments/:attachmentid([0-9]+)', 
-     sessionController.requiresLogin,
-     postController.loggedUserIsAuthor,
-     attachmentController.destroy);
-
-app.get('/raws', 
-  attachmentController.raws);
-
-//---------------------
 
 app.get('/posts/:postid([0-9]+)/comments', 
 	commentController.index);
