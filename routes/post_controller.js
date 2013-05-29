@@ -123,8 +123,8 @@ exports.show = function(req, res, next) {
             req.post.author = user || {};
 
             // Buscar Adjuntos
-            req.post.getAttachments({order: 'updatedAt DESC'})
-               .success(function(attachments) {
+            //req.post.getAttachments({order: 'updatedAt DESC'})
+             // .success(function(attachments) {
             
                   // Buscar comentarios
                   models.Comment
@@ -146,8 +146,8 @@ exports.show = function(req, res, next) {
                                 res.render('posts/show', {
                                     post: req.post,
                                     comments: comments,
-                                    comment: new_comment,
-                                    attachments: attachments
+                                    comment: new_comment
+                                    //attachments: attachments
                                 });
                                 break;
                             case 'json':
@@ -167,10 +167,10 @@ exports.show = function(req, res, next) {
                        .error(function(error) {
                            next(error);
                        })
-                })
-               .error(function(error) {
-                   next(error);
-                });
+                //})
+               //.error(function(error) {
+               //    next(error);
+               // });
         })
         .error(function(error) {
             next(error);
