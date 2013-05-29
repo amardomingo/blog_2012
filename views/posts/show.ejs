@@ -3,8 +3,9 @@
  <div class="post">
     <div class="page-header">
       <h1>
-        <%= post.title %>
+        <%= post.title %> 
         <small>por <em> <%= post.author && post.author.name || "Sin autor" %> </em></small>
+        <i class='icon-star icon-white'>
       </h1>
      <em> <%= post.updatedAt.toLocaleDateString() %></em>
    </div>
