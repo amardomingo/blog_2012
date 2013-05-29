@@ -127,6 +127,7 @@ exports.delete = function(req, res, next) {
                     for (var i in favs) {
                         favs[i].destroy();
                     }
+                    req.flash('info', 'Post eliminado de favoritos');
                     res.redirect('/posts');
                 } else {
                     req.flash('info', 'El post no está en favoritos');
@@ -137,7 +138,8 @@ exports.delete = function(req, res, next) {
             });
 };
 
-// Middleware
+// Middlewares
+
 exports.favs = function(req,res,next) {
     if (req.session.user) {
         models.Favourite.findAll({where: {authorId: req.session.user.id}})
