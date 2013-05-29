@@ -29,7 +29,7 @@ exports.load = function(req, res, next, id) {
 exports.index = function(req, res, next) {
 // Busqueda del array de posts favoritos de un usuario
 
-  models.Favourite.findAll({where: {authorId: req.user.id}})
+  models.Favourite.findAll({where: {authorId: req.session.user.id}})
      .success(function(favourites) {
 
          // generar array con postIds de los post favoritos
@@ -94,7 +94,6 @@ exports.add = function(req, res, next) {
                         }
                         
                         res.redirect('/posts/' + req.post.id);
-                        return;
                     }
                     
                     // Guardamos el fav
@@ -119,11 +118,16 @@ exports.add = function(req, res, next) {
 
 // DELETE  /users/:userid/favourites/:postid
 exports.delete = function(req, res, next) {
+    console.log('postid: ' + req.params.postid);
     // Compruebo que exista
-    models.Favourite.find({where: {authorId: req.user.id, postId: req.post.id}})
-            .success(function(post){
-                if (post) {
-                    req.favourites.destroy();
+    models.Favourite.findAll({where: {authorId: req.user.id, 
+                            postId: req.params.postid}})
+            .success(function(favs){
+                if (favs) {
+                    for (var i in favs) {
+                        favs[i].destroy();
+                    }
+                    res.redirect('/posts');
                 } else {
                     req.flash('info', 'El post no está en favoritos');
                 }
@@ -131,5 +135,39 @@ exports.delete = function(req, res, next) {
             .error(function(error) {
                 next(error);
             });
+};
+
+// Middleware
+exports.favs = function(req,res,next) {
+    if (req.session.user) {
+        models.Favourite.findAll({where: {authorId: req.session.user.id}})
+            .success(function(favs){
+                req.favs = favs;
+                next();
+            })
+            .error(function(error){
+                next(error);
+            });
+    } else {
+        req.favs = {};
+        next();
+    }
+};
+
+exports.isFav = function(req,res,next) {
+    if (req.session.user) {
+        models.Favourite.findAll({where: {authorId: req.session.user.id,
+                                  postId: req.params.Id}})
+            .success(function(favs){
+                req.isFav = 1;
+                next();
+            })
+            .error(function(error){
+                next(error);
+            });
+    } else {
+        req.favs = {};
+        next();
+    }
 };
 

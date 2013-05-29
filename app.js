@@ -9,10 +9,10 @@ var express = require('express')
   , path = require('path')
   , partials = require('express-partials')
   , sessionController = require('./routes/session_controller.js')
+  , favController = require('./routes/favourites_controller.js')
   , postController = require('./routes/post_controller.js')
   , userController = require('./routes/user_controller.js')
   , commentController = require('./routes/comment_controller.js')
-  , favController = require('./routes/favourites_controller.js')
 
 
 var util = require('util');
@@ -92,10 +92,10 @@ app.get('/', routes.index);
 
 // Auto-Loading:
 
+app.param('userid',favController.load);
 app.param('postid', postController.load);
 app.param('userid', userController.load);
 app.param('commentid', commentController.load);
-app.param('userid',favController.load);
 
 //---------------------
 
@@ -153,13 +153,17 @@ app.get('/orphancomments',
 
 //---------------------
 
-app.get('/posts.:format?', postController.index);
+app.get('/posts.:format?',
+         favController.favs,
+         postController.index);
 
 app.get('/posts/new', 
         sessionController.requiresLogin,
         postController.new);
 
-app.get('/posts/:postid([0-9]+).:format?', postController.show);
+app.get('/posts/:postid([0-9]+).:format?', 
+        favController.isFav,
+        postController.show);
 app.post('/posts', 
 	sessionController.requiresLogin,
         postController.create);

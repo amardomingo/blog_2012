@@ -52,14 +52,13 @@ exports.index = function(req, res, next) {
 	                include: [ { model: models.User, as: 'Author' } ]
 	      })
         .success(function(posts) {
-
-          // console.log(posts);
-          
             switch (format) { 
               case 'html':
               case 'htm':
+                  // Añado los favoritos
                   res.render('posts/index', {
-                    posts: posts
+                    posts: posts,
+                    favs: req.favs
                   });
                   break;
               case 'json':
@@ -146,7 +145,8 @@ exports.show = function(req, res, next) {
                                 res.render('posts/show', {
                                     post: req.post,
                                     comments: comments,
-                                    comment: new_comment
+                                    comment: new_comment,
+                                    isFav: req.isFav
                                     //attachments: attachments
                                 });
                                 break;
