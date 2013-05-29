@@ -34,10 +34,11 @@
 
           <div class="btn-group pull-right">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="icon-user"></i> 
                 <% if (session.user) { %>
+                  <input type="image" src="http://www.gravatar.com/avatar/ef0e74d53f69fd7686f5ccdbf2b98231.jpg?s=25" />
                   <%= session.user.name %>       
                 <% } else { %>
+                  <i class="icon-user"></i> 
                   Entrar o Registrarse
                 <% } %>
               <span class="caret"></span>
