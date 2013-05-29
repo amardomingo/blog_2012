@@ -5,9 +5,14 @@
       <h1>
         <a href='/posts/<%= posts[i].id %>' class='titlelink'> <%= posts[i].title %></a>
         <small>por <em> <%= posts[i].author && posts[i].author.name || "Sin autor" %></em></small>
+        <% if (session.user) { %>
+        <form method='post' action="/users/<%= session.user.id %>/favourites/<%= posts[i].id %>">
+        <input type='hidden' name='_method' value='delete'>
         
         <button class="btn btn-small" type="submmit"><input type="image" 
                src="/images/estrella2.png" /></button>
+        </form>
+        <% } %>
         
         
       </h1>
