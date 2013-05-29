@@ -5,13 +5,13 @@
 exports.load = function(req, res, next, id) {
 
    models.Favourites
-        .find({where: {postId: Number(id)}})
-        .success(function(fav) {
-            if (fav) {
-                req.fav = fav;
+        .find({where: {userId: Number(id)}})
+        .success(function(favs) {
+            if (favs) {
+                req.fav = favs;
                 next();
             } else {
-                // Simplemente no está en favoritos
+                // Simplemente no tiene favoritos
                 //req.flash('error', 'El post con id ' + id + ' no está en favoritos' );
                 //next('El post con id ' + id + ' no está en favoritos');
             }
