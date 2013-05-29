@@ -2,7 +2,7 @@
 // Definicion del modelo Fav:
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('favourites',
+  return sequelize.define('Favourites',
             { authorId: {
                  type: DataTypes.INTEGER,
                  validate: {
