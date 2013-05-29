@@ -7,20 +7,20 @@
         <small>por <em> <%= post.author && post.author.name || "Sin autor" %> </em></small>
         <% if (session.user) {%>
         <form method='post' action="/users/<%= session.user.id%>/favourites/<%= post.id %>">
-<input type='hidden' name='_method' value='put'>
-<button class="btn btn-small" type="submmit"><i class="icon-star icon black"></i> A Favoritos</button>
+        <input type='hidden' name='_method' value='put'>
+        <button class="btn btn-small" type="submmit"><input type="image" 
+               src="/images/estrella1.png" /></button>
         </form>
         <% } %>
       </h1>
      <em> <%= post.updatedAt.toLocaleDateString() %></em>
    </div>
    <p><%- escapeText(post.body) %></p>
-
+   <img src="/home/dlara/SWCM/blog_2012/public/images/layers.png">
    <% if (session.user && session.user.id == post.authorId) {%>  
      <a href="/posts/<%= post.id %>/edit"> Editar </a>
    <% } %>
 </div>
-
 <hr />
 <%- include ../comments/index.ejs %>
 <hr />

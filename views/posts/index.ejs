@@ -5,7 +5,8 @@
       <h1>
         <a href='/posts/<%= posts[i].id %>' class='titlelink'> <%= posts[i].title %></a>
         <small>por <em> <%= posts[i].author && posts[i].author.name || "Sin autor" %></em>
-        
+        <button class="btn btn-small" type="submmit"><input type="image" 
+               src="/images/estrella1.png" /></button>
         </small>
       </h1>
      <em> <%= posts[i].updatedAt.toLocaleDateString() %></em>
